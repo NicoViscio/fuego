@@ -11,8 +11,8 @@ class FireModel {
         heatMap.updateFire();
     }
 
-    public int getColorAt(int x, int y) {
-        int heat = heatMap.getHeatAt(x, y);
+    public int getColor(int x, int y) {
+        int heat = heatMap.getMap(x, y);
         return colorPalette.getColor(heat);
     }
 }

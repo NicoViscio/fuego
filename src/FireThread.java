@@ -12,6 +12,8 @@ class FireThread implements Runnable {
 
     @Override
     public void run() {
+        //Utilizo un while ture, ya que no queremos que pare, en el caso de querer hacerlo podemos
+        //poner el run en un listener de algún botón
         while (true) {
             try {
                 SwingUtilities.invokeLater(() -> {

@@ -18,7 +18,7 @@ class FireView extends JPanel {
         // Aquí se actualiza la imagen
         for (int y = 0; y < fireImage.getHeight(); y++) {
             for (int x = 0; x < fireImage.getWidth(); x++) {
-                fireImage.setRGB(x, y, model.getColorAt(x, y));
+                fireImage.setRGB(x, y, model.getColor(x, y));
             }
         }
         Graphics2D g2d = (Graphics2D) g;

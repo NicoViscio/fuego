@@ -41,7 +41,7 @@ class FireHeatMap {
         }
     }
 
-    public int getHeatAt(int x, int y) {
+    public int getMap(int x, int y) {
         return heatMap[y][x];
     }
 }
