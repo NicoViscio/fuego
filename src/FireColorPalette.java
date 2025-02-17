@@ -2,28 +2,27 @@ class FireColorPalette {
     private int[] colorPalette;
 
     public FireColorPalette() {
-        ColorPalette();
+        initializePalette();
     }
 
-    private void ColorPalette() {
-        colorPalette = new int[256];
-        for (int i = 0; i < 256; i++) {
+    private void initializePalette() {
+
+        int paletteSize = 256;
+
+        colorPalette = new int[paletteSize];
+        for (int i = 0; i < paletteSize; i++) {
 
             int alpha;
-            if (i < 32) {  // Muy poca intensidad se verá completamente transparente
+            if (i < 32) {
                 alpha = 0;
-            } else if (i < 64) {  // Esto es intensidad intermedia
-                alpha = (i - 32) * 4;
-            } else {  // Mas intensidad, mas color
-                alpha = Math.min(255, i * 2);
+            } else {
+                alpha = Math.min(255, i * 4);
             }
 
-            // Esto añade más brillo a los colores.
             int red = Math.min(255, i * 3);
-            int green = Math.min(255, (int)(i * 1.5));
-            int blue = i / 4;
+            int blue = i / 3;
 
-            colorPalette[i] = (alpha << 24) | (red << 16) | (green << 8) | blue;
+            colorPalette[i] = (alpha << 24) | (red << 16) | (i << 8) | blue;
         }
     }
 

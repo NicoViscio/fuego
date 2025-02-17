@@ -15,14 +15,15 @@ class FireView extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        // Aquí se actualiza la imagen
+        updateFireImage();
+        g.drawImage(fireImage, 0, 0, getWidth(), getHeight(), null);
+    }
+
+    private void updateFireImage() {
         for (int y = 0; y < fireImage.getHeight(); y++) {
             for (int x = 0; x < fireImage.getWidth(); x++) {
                 fireImage.setRGB(x, y, model.getColor(x, y));
             }
         }
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2d.drawImage(fireImage, 0, 0, getWidth(), getHeight(), null);
     }
 }
