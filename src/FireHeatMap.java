@@ -1,9 +1,9 @@
 class FireHeatMap {
-    private int width;
-    private int height;
-    private int[][] heatMap;
-    private static final int maxHeat = 255;
-    private double porcentaje = 0.15;
+    private final int width;
+    private final int height;
+    private final int[][] heatMap;
+    private static final int MAX_HEAT = 1023;
+    private static final double percentage = 0.35;
 
     public FireHeatMap(int width, int height) {
         this.width = width;
@@ -13,49 +13,61 @@ class FireHeatMap {
 
     public void updateFire() {
         generateBase();
-        propagateFire();
+        temperatureEvolve();
     }
 
     private void generateBase() {
-        int y = height -1;
+        int y = height - 1;
         for (int x = 0; x < width; x++) {
-            if (Math.random() < porcentaje) {
-                heatMap[y][x] = 255 - (int)(Math.random() * 30);
+            if (Math.random() < percentage) {
+                heatMap[y][x] = MAX_HEAT;
             } else {
                 heatMap[y][x] = 0;
             }
         }
     }
 
-    private void propagateFire() {
-        for (int y = 0; y < height-1; y++) {
-            for (int x = 0; x < width; x++) {
-                int heat = calculateAverageHeat(x, y + 1);
-                heat = Math.max(0, heat - (int)(Math.random() * 2));
-                heatMap[y][x] = Math.min(maxHeat, heat);
+    private void temperatureEvolve() {
+        for (int actualRow = height - 2; actualRow > 4; actualRow--) {
+            int iniRow = width * actualRow;
+            int iniBelowRow = iniRow + width;
+
+            for (int actualCol = 2; actualCol < width - 2; actualCol++) {
+                int y = iniRow / width;
+                int temperature = getTemperature(iniBelowRow, actualCol, y);
+
+                if (temperature < 0) {
+                    temperature = 0;
+                } else if (temperature > MAX_HEAT) {
+                    temperature = MAX_HEAT;
+                }
+
+                heatMap[y][actualCol] = temperature;
             }
         }
     }
 
-    private int calculateAverageHeat(int x, int y) {
-        int sum = 0;
-        int count = 0;
+    private int getTemperature(int iniBelowRow, int x, int y) {
+        int yBelow = iniBelowRow / width;
 
-        // 3 pixeles para calcular la media y propagar
-        for (int dx = -1; dx <= 1; dx++) {
-            int newX = x + dx;
-            if (newX >= 0 && newX < width) {
-                sum += heatMap[y][newX];
-                count++;
-            }
-        }
+        double newTemp = (
+                (getPixelTemp(x - 1, y) * 1.2D) +
+                        (getPixelTemp(x, y) * 1.5D) +
+                        (getPixelTemp(x + 1, y) * 1.2D) +
+                        (getPixelTemp(x - 1, yBelow) * 0.7D) +
+                        (getPixelTemp(x, yBelow) * 0.7D) +
+                        (getPixelTemp(x + 1, yBelow) * 0.7D)
+        ) / 5.98569;
 
-        if (count > 0) {
-            return sum / count;
-        } else {
+        return (int) (newTemp - 1.8D);
+    }
+
+    private int getPixelTemp(int x, int y) {
+        // Aseguramos que no nos salimos de los límites del array
+        if (x < 0 || x >= width || y < 0 || y >= height) {
             return 0;
         }
-
+        return heatMap[y][x];
     }
 
     public int getMap(int x, int y) {

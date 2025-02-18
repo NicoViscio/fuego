@@ -1,3 +1,5 @@
+import java.awt.*;
+
 class FireColorPalette {
     private int[] colorPalette;
 
@@ -6,27 +8,37 @@ class FireColorPalette {
     }
 
     private void initializePalette() {
+        colorPalette = new int[1024]; // Aumentado a 1024 para coincidir con MAX_HEAT
 
-        int paletteSize = 256;
+        // Color negro para valores bajos
+        addColorRange(0, 220, new Color(0, 0, 0, 0), new Color(0, 0, 0, 100));
 
-        colorPalette = new int[paletteSize];
-        for (int i = 0; i < paletteSize; i++) {
+        // Transición a rojo
+        addColorRange(220, 240, new Color(0, 0, 0, 100), new Color(155, 0, 0, 110));
 
-            int alpha;
-            if (i < 32) {
-                alpha = 0;
-            } else {
-                alpha = Math.min(255, i * 4);
-            }
+        // Transición a blanco
+        addColorRange(240, 290, new Color(155, 0, 0, 110), new Color(200, 100, 0, 180));
+        addColorRange(290, 450, new Color(200, 100, 0, 180), new Color(235, 235, 40, 250));
+        addColorRange(450, 520, new Color(235, 235, 40, 250), new Color(255, 255, 200, 255));
 
-            int red = Math.min(255, i * 3);
-            int blue = i / 3;
+        // Blanco puro para el máximo calor
+        for (int i = 520; i < 1024; i++) {
+            colorPalette[i] = new Color(255, 255, 255, 255).getRGB();
+        }
+    }
 
-            colorPalette[i] = (alpha << 24) | (red << 16) | (i << 8) | blue;
+    private void addColorRange(int start, int end, Color c1, Color c2) {
+        for (int i = start; i < end; i++) {
+            float ratio = (float)(i - start) / (end - start);
+            int r = (int)(c1.getRed() + ratio * (c2.getRed() - c1.getRed()));
+            int g = (int)(c1.getGreen() + ratio * (c2.getGreen() - c1.getGreen()));
+            int b = (int)(c1.getBlue() + ratio * (c2.getBlue() - c1.getBlue()));
+            int a = (int)(c1.getAlpha() + ratio * (c2.getAlpha() - c1.getAlpha()));
+            colorPalette[i] = new Color(r, g, b, a).getRGB();
         }
     }
 
     public int getColor(int heat) {
-        return colorPalette[heat];
+        return colorPalette[Math.min(heat, colorPalette.length - 1)];
     }
 }

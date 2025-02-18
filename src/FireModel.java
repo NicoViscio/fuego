@@ -1,6 +1,6 @@
 class FireModel {
-    private FireHeatMap heatMap;
-    private FireColorPalette colorPalette;
+    private final FireHeatMap heatMap;
+    private final FireColorPalette colorPalette;
 
     public FireModel(int width, int height) {
         this.heatMap = new FireHeatMap(width, height);

@@ -3,9 +3,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 class FireView extends JPanel {
-    private FireModel model;
-    private BufferedImage fireImage;
-    private int width, height;
+    private final FireModel model;
+    private final BufferedImage fireImage;
+    private final int width;
+    private final int height;
 
     public FireView(FireModel model, int width, int height) {
         this.model = model;
@@ -28,14 +29,5 @@ class FireView extends JPanel {
                 fireImage.setRGB(x, y, model.getColor(x, y));
             }
         }
-    }
-
-    public void setFireSize(int width, int height) {
-        this.width = width;
-        this.height = height;
-        this.fireImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        setPreferredSize(new Dimension(width, height));
-        revalidate();
-        repaint();
     }
 }
