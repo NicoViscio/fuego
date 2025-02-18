@@ -3,6 +3,7 @@ class FireHeatMap {
     private int height;
     private int[][] heatMap;
     private static final int maxHeat = 255;
+    private double porcentaje = 0.15;
 
     public FireHeatMap(int width, int height) {
         this.width = width;
@@ -16,11 +17,12 @@ class FireHeatMap {
     }
 
     private void generateBase() {
+        int y = height -1;
         for (int x = 0; x < width; x++) {
-            if (Math.random() < 0.4) {
-                heatMap[height-1][x] = 255 - (int)(Math.random() * 30);
+            if (Math.random() < porcentaje) {
+                heatMap[y][x] = 255 - (int)(Math.random() * 30);
             } else {
-                heatMap[height-1][x] = 0;
+                heatMap[y][x] = 0;
             }
         }
     }
@@ -39,7 +41,7 @@ class FireHeatMap {
         int sum = 0;
         int count = 0;
 
-        // Usamos 3 pixeles para calcular la media y propagar
+        // 3 pixeles para calcular la media y propagar
         for (int dx = -1; dx <= 1; dx++) {
             int newX = x + dx;
             if (newX >= 0 && newX < width) {
