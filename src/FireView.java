@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+
 class FireView extends JPanel {
     private final FireModel model;
     private final BufferedImage fireImage;
@@ -13,6 +14,7 @@ class FireView extends JPanel {
         this.width = width;
         this.height = height;
         this.fireImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        setOpaque(false);
         setPreferredSize(new Dimension(width, height));
     }
 

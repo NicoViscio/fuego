@@ -3,7 +3,7 @@ class FireHeatMap {
     private final int height;
     private final int[][] heatMap;
     private static final int MAX_HEAT = 1023;
-    private static final double percentage = 0.35;
+    private static final double percentage = 0.40;
 
     public FireHeatMap(int width, int height) {
         this.width = width;
